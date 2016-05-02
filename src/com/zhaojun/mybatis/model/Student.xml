@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhaojun.mybatis.studentDao.StudentDao">
+
+	<select id="queryStudent" parameterType="String" resultType="Student">
+		select * from student where id = #{id}
+	</select>
+
+	<!-- 查询结果集 -->
+	<resultMap id="resultListStudent" type="Student">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+	</resultMap>
+	<select id="selectStudent" resultMap="resultListStudent">
+		select * from student
+	</select>
+	<!-- 多表联合查询方法一：association独立出来 -->
+	<resultMap id="resultListStudentUser" type="User">
+		<id property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<association property="student" javaType="Student" resultMap="resultListStudent" />
+	</resultMap>
+
+	<select id="getStudentUser" parameterType="String" resultMap="resultListStudentUser">
+		select student.id,student.age,student.name,userinfo.id,
+			userinfo.username,userinfo.password from student,userinfo
+				where student.id=userinfo.id and userinfo.id=#{id}
+	</select>
+
+	<insert id="addStudent" parameterType="Student"><!-- useGeneratedKeys="true" 
+			keyProperty="id" -->
+		insert into student(id,name,age) values (#{id},#{name},#{age})
+	</insert>
+
+	<update id="updateStudent" parameterType="Student">
+		update student set name=#{name},age=#{age} where id=#{id}
+	</update>
+
+	<delete id="deleteStudent" parameterType="String">
+		delete from student where id=#{id}
+	</delete>
+
+	
+</mapper>
