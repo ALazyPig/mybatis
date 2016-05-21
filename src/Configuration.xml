@@ -26,5 +26,7 @@
 	<mappers>
 		<mapper resource="com/zhaojun/mybatis/model/Student.xml" />
 	</mappers>
-	
+	<plugins> 
+		<plugin interceptor="plugin.PaginationInterceptor"/> 
+	</plugins>
 </configuration>

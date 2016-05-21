@@ -42,5 +42,9 @@
 		delete from student where id=#{id}
 	</delete>
 
+	<!-- 分页 -->
+	<select id="selectUserByPage" resultMap="dao.base.userResultMap">
+        SELECT * FROM user
+    </select>
 	
 </mapper>

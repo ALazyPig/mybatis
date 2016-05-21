@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -19,7 +20,7 @@ public class mybatisTest {
 	private static Reader reader;
 	static{
 		try {
-			reader = Resources.getResourceAsReader("Configuration.xml");
+			 reader = Resources.getResourceAsReader("Configuration.xml");
 			 sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -40,7 +41,7 @@ public class mybatisTest {
 	public void test2() {
 		SqlSession session = sqlSessionFactory.openSession();
 		StudentDao studentDao = session.getMapper(StudentDao.class);
-		Student student = studentDao.queryStudent("3");
+		Student student = studentDao.queryStudent("1");
 		session.commit();
 		session.close();
 		System.out.println(student);
@@ -99,4 +100,14 @@ public class mybatisTest {
 		session.commit();
 		session.close();
 	}
+	
+	
+	
+	
+	
+	@Test    //分页测试
+	public List<User> selectUserByPage(int offset, int limit) {
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        return sqlSessionFactory.openSession().selectList("dao.userdao.selectUserByPage", new Object(), rowBounds);
+    }
 }
